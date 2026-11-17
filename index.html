@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Ayda Nova</title>
+  <meta name="description" content="Ayda Nova — websites, mobile apps, prototypes and MVPs. Explore live projects and transparent pricing.">
+  <meta name="author" content="Ayda Nova">
+  <meta name="theme-color" content="#110E33">
+
+  <link rel="icon" type="image/jpeg" href="./logo-bg.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Brand colors (same palette as before) */
+      --navy: #0B0F2A;
+      --violet: #8B5CF6;
+      --violet-deep: #6D46E6;
+      --sky: #38BDF8;
+      --lavender: #E6E6FF;
+      --white: #FFFFFF;
+
+      /* Light theme tokens */
+      --bg: #FFFFFF;
+      --soft: #F7F6FF;
+      --tint: #EFEDFF;
+      --ink: var(--navy);
+      --muted: #5A5E7F;
+      --line: rgba(11, 15, 42, .08);
+      --shadow-sm: 0 6px 20px -10px rgba(76, 52, 180, .18);
+      --shadow: 0 24px 60px -28px rgba(76, 52, 180, .35);
+      --gradient: linear-gradient(120deg, var(--violet) 0%, var(--violet-deep) 100%);
+      --gradient-bright: linear-gradient(110deg, var(--sky), var(--violet));
+      --gradient-dark: linear-gradient(120deg, #1A1550 0%, #3A2694 55%, #6D46E6 100%);
+
+      --radius: 20px;
+      --content-width: 1180px;
+      --ease: cubic-bezier(.2, .8, .2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+
+    body {
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+    img { display: block; max-width: 100%; }
+
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--violet);
+      outline-offset: 4px;
+      border-radius: 8px;
+    }
+
+    ::selection { color: var(--white); background: var(--violet); }
+
+    .container { width: min(var(--content-width), 100% - 48px); margin-inline: auto; }
+
+    .grad-text {
+      background: var(--gradient-bright);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ---------- Buttons ---------- */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 0 22px;
+      border: 1px solid transparent;
+      border-radius: 100px;
+      font-size: .9rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: transform .25s var(--ease), box-shadow .25s, background .25s, border-color .25s;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button svg { width: 16px; height: 16px; }
+
+    .button-primary {
+      color: var(--white);
+      background: var(--gradient);
+      box-shadow: 0 12px 28px -12px rgba(109, 70, 230, .7);
+    }
+    .button-primary:hover { box-shadow: 0 16px 34px -12px rgba(109, 70, 230, .85); }
+
+    .button-ghost {
+      color: var(--navy);
+      background: var(--white);
+      border-color: var(--line);
+    }
+    .button-ghost:hover { border-color: var(--violet); }
+
+    .button-light { color: var(--violet-deep); background: var(--white); }
+
+    /* ---------- Header ---------- */
+    /* Transparent over the dark hero; turns solid white once the page scrolls (.solid via JS). */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 30;
+      background: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
+      transition: background .35s var(--ease), border-color .35s, box-shadow .35s;
+    }
+    .site-header.solid {
+      background: rgba(255, 255, 255, .88);
+      border-bottom-color: var(--line);
+      box-shadow: 0 10px 30px -24px rgba(11, 15, 42, .4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .site-header:not(.solid) .brand { color: var(--white); }
+    .site-header:not(.solid) .brand span { color: #C4B5FD; }
+    .site-header:not(.solid) .nav-links a:not(.button) { color: rgba(255, 255, 255, .78); }
+    .site-header:not(.solid) .nav-links a:not(.button):hover { color: var(--white); }
+    .site-header:not(.solid) .nav-cta {
+      color: var(--white);
+      background: rgba(255, 255, 255, .04);
+      border-color: rgba(255, 255, 255, .35);
+      box-shadow: none;
+    }
+    .site-header:not(.solid) .nav-cta:hover { background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .6); }
+    .site-header:not(.solid) .menu-toggle { color: var(--white); background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .22); }
+    .nav-cta svg { width: 14px; height: 14px; }
+
+    .nav { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; letter-spacing: -.02em; }
+    .brand img { width: 40px; height: 40px; border-radius: 11px; object-fit: cover; }
+    .brand span { color: var(--violet); }
+
+    .nav-links { display: flex; align-items: center; gap: 30px; }
+    .nav-links a { color: var(--muted); font-size: .9rem; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--violet-deep); }
+
+    .nav-cta { min-height: 42px; padding: 0 18px; font-size: .85rem; gap: 6px; }
+
+    .menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--white);
+      color: var(--navy);
+    }
+    .menu-toggle svg { width: 20px; height: 20px; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      --hill-radius: 220px;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: calc(74px + clamp(48px, 7vw, 86px)) 0 30px;
+      color: var(--white);
+      /* Fixed px stops so the gradient looks the same whatever the hero's total height. */
+      background:
+        radial-gradient(ellipse 45% 380px at 8% 620px, rgba(167, 112, 255, .55), transparent 70%),
+        radial-gradient(ellipse 40% 340px at 95% 700px, rgba(192, 132, 252, .45), transparent 70%),
+        radial-gradient(ellipse 50% 300px at 50% 0, rgba(56, 189, 248, .10), transparent 70%),
+        linear-gradient(180deg, #110E33 0, #1D1756 220px, #33238A 480px, #5A3BC2 760px, #7C55DE 1000px, #8B63E8 1300px);
+    }
+
+    /* Decorations */
+    .hero-deco { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+    .deco { position: absolute; }
+    .deco-sparkle { top: 360px; left: 9%; width: 40px; color: rgba(214, 200, 255, .7); animation: twinkle 4.5s ease-in-out infinite; }
+    .deco-sparkle.small { top: 160px; left: 22%; width: 16px; animation-delay: -2s; color: rgba(214, 200, 255, .45); }
+    .deco-sparkle.tiny { top: 230px; right: 18%; left: auto; width: 14px; animation-delay: -1s; color: rgba(125, 211, 252, .55); }
+    .deco-bolt { top: 330px; right: 7%; width: 64px; animation: floaty 6s ease-in-out infinite; filter: drop-shadow(0 14px 18px rgba(20, 10, 60, .35)); }
+    .deco-ring {
+      top: 120px; left: -90px;
+      width: 260px; height: 260px;
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 50%;
+    }
+    .deco-ring.r2 { top: 60px; left: auto; right: -140px; width: 380px; height: 380px; }
+
+    @keyframes twinkle {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: .9; }
+      50% { transform: scale(.72) rotate(45deg); opacity: .5; }
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0) rotate(-8deg); }
+      50% { transform: translateY(-14px) rotate(-3deg); }
+    }
+
+    /* Intro copy */
+    .hero-intro { position: relative; max-width: 1000px; text-align: center; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px 6px 8px;
+      border: 1px solid rgba(139, 92, 246, .25);
+      border-radius: 100px;
+      font-size: .78rem;
+      font-weight: 600;
+    }
+    .pill .dot { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; }
+    .pill .dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; }
+
+    .hero-pill {
+      color: #E4DCFF;
+      background: rgba(255, 255, 255, .07);
+      border-color: rgba(255, 255, 255, .16);
+      box-shadow: none;
+      backdrop-filter: blur(8px);
+    }
+    .hero-pill .dot { background: rgba(74, 222, 128, .18); }
+    .hero-pill .dot::before { background: #4ADE80; box-shadow: 0 0 0 0 rgba(74, 222, 128, .6); animation: pulse 2.2s infinite; }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, .6); }
+      70%, 100% { box-shadow: 0 0 0 7px rgba(74, 222, 128, 0); }
+    }
+
+    .hero h1 {
+      margin: 24px auto 20px;
+      font-size: clamp(2.1rem, 5vw, 4.1rem);
+      line-height: 1.08;
+      font-weight: 700;
+      letter-spacing: -.035em;
+      text-wrap: balance;
+    }
+    .h1-chevron {
+      display: inline-block;
+      width: .62em; height: .62em;
+      margin-right: .14em;
+      vertical-align: .02em;
+      color: #C08BFF;
+    }
+    .h1-chevron svg { width: 100%; height: 100%; }
+    .hero .grad-text { background: linear-gradient(100deg, #7DD3FC 0%, #C4B5FD 55%, #F0ABFC 100%); -webkit-background-clip: text; background-clip: text; }
+
+    .hero-text {
+      max-width: 640px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, .82);
+      font-size: clamp(.98rem, 1.4vw, 1.08rem);
+      line-height: 1.85;
+    }
+    .hero-text strong { color: var(--white); font-weight: 600; }
+
+    .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 34px; }
+    .hero-actions .button { min-height: 52px; padding: 0 26px; font-size: .95rem; }
+    .hero-actions .button svg { width: 16px; height: 16px; }
+    .button-hero {
+      color: var(--white);
+      background: linear-gradient(120deg, #B77BFF 0%, #8B5CF6 55%, #7C4DFF 100%);
+      border-color: rgba(255, 255, 255, .28);
+      box-shadow: 0 14px 34px -12px rgba(183, 123, 255, .9), inset 0 1px 0 rgba(255, 255, 255, .35);
+    }
+    .button-hero:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -12px rgba(183, 123, 255, 1), inset 0 1px 0 rgba(255, 255, 255, .35); }
+    .button-glass { color: var(--white); background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .3); }
+    .button-glass:hover { background: rgba(255, 255, 255, .14); border-color: rgba(255, 255, 255, .55); }
+
+    /* Entrance animation */
+    .reveal { animation: reveal 1s var(--ease) both; animation-delay: var(--d, 0s); }
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(26px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ---------- Device mockup + slideshow ---------- */
+    .device-stage { position: relative; margin-top: clamp(48px, 7vw, 80px); }
+
+    .device {
+      --frame-pad: clamp(8px, 1.3vw, 15px);
+      --frame-radius: clamp(18px, 2.6vw, 32px);
+      position: relative;
+      z-index: 0;
+      max-width: 1020px;
+      margin: 0 auto;
+    }
+
+    /* White curved "hill" that ends the purple background behind the device. */
+    .hero-hill {
+      position: absolute;
+      z-index: -2;
+      top: 46%;
+      left: 50%;
+      width: 130vw;
+      height: 4000px;
+      transform: translateX(-50%);
+      border-radius: 50% 50% 0 0 / var(--hill-radius) var(--hill-radius) 0 0;
+      background: var(--bg);
+    }
+
+    /* Stacked layers peeking out under the device. */
+    .device-stack {
+      position: absolute;
+      z-index: -1;
+      height: 40%;
+      border-radius: var(--frame-radius);
+    }
+    .device-stack.s1 { left: 4%; right: 4%; bottom: clamp(-30px, -2.6vw, -12px); background: #C9B6FF; }
+    .device-stack.s2 { left: 8%; right: 8%; bottom: clamp(-56px, -4.8vw, -22px); background: #E9E1FF; z-index: -2; }
+
+    .device-frame {
+      position: relative;
+      padding: var(--frame-pad);
+      border-radius: var(--frame-radius);
+      background: linear-gradient(150deg, #B794FF 0%, #9061F9 40%, #7C4DFF 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .5),
+        inset 0 -2px 0 rgba(40, 10, 120, .25),
+        0 50px 90px -40px rgba(55, 25, 160, .75),
+        0 0 0 1px rgba(255, 255, 255, .12);
+    }
+    /* Front camera */
+    .device-frame::before {
+      content: '';
+      position: absolute;
+      top: calc(var(--frame-pad) / 2);
+      left: 50%;
+      width: 5px; height: 5px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: #2A1667;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .15);
+    }
+
+    .device-screen {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-radius: calc(var(--frame-radius) - var(--frame-pad));
+      background: #0E0B26;
+      box-shadow: 0 0 0 1px rgba(10, 5, 40, .55);
+    }
+
+    .browser-bar {
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1.4vw, 16px);
+      height: clamp(28px, 3.4vw, 42px);
+      padding: 0 clamp(10px, 1.4vw, 16px);
+      background: #17133A;
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+      color: rgba(255, 255, 255, .7);
+    }
+    .browser-dots { display: flex; gap: clamp(4px, .5vw, 7px); }
+    .browser-dots i { width: clamp(7px, .9vw, 11px); aspect-ratio: 1; border-radius: 50%; background: #FF5F57; }
+    .browser-dots i:nth-child(2) { background: #FEBC2E; }
+    .browser-dots i:nth-child(3) { background: #28C840; }
+
+    .browser-url {
+      flex: 1;
+      min-width: 0;
+      max-width: 460px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 64%;
+      padding: 0 12px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, .07);
+      font-size: clamp(.58rem, 1vw, .76rem);
+      font-weight: 500;
+    }
+    .browser-url svg { flex: none; width: 1.1em; height: 1.1em; color: #4ADE80; }
+    .browser-url span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: opacity .35s; }
+
+    .browser-open {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: clamp(.58rem, 1vw, .74rem);
+      font-weight: 600;
+      color: rgba(255, 255, 255, .75);
+      transition: color .2s;
+    }
+    .browser-open:hover { color: var(--white); }
+    .browser-open svg { width: 1.1em; height: 1.1em; }
+
+    .device-viewport { position: relative; flex: 1; overflow: hidden; background: #fff; }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.06);
+      filter: blur(6px);
+      transition: opacity .9s var(--ease), transform 1.3s var(--ease), filter .9s var(--ease), visibility 0s linear 1.3s;
+    }
+    .slide.is-active {
+      z-index: 2;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      filter: none;
+      transition: opacity .9s var(--ease), transform 1.3s var(--ease), filter .9s var(--ease), visibility 0s;
+    }
+    /* Outgoing slide stays underneath and recedes while the new one fades in on top. */
+    .slide.is-leaving {
+      z-index: 1;
+      opacity: 1;
+      visibility: visible;
+      transform: scale(.965);
+      filter: brightness(.6);
+      transition: transform 1.3s var(--ease), filter 1.3s var(--ease), visibility 0s;
+    }
+
+    .slide iframe {
+      position: absolute;
+      top: 0; left: 0;
+      border: 0;
+      background: #fff;
+      transform-origin: top left;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .6s var(--ease);
+    }
+    .slide.loaded iframe { opacity: 1; }
+
+    .slide-loader {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-content: center;
+      justify-items: center;
+      gap: 14px;
+      color: var(--violet-deep);
+      background: linear-gradient(135deg, #F4F0FF, #E7F5FE);
+      font-weight: 700;
+      font-size: clamp(.8rem, 1.6vw, 1.1rem);
+    }
+    .slide-loader::before {
+      content: '';
+      width: 30px; height: 30px;
+      border: 3px solid rgba(139, 92, 246, .2);
+      border-top-color: var(--violet);
+      border-radius: 50%;
+      animation: spin .9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .screen-glare {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      border-radius: inherit;
+      background: linear-gradient(115deg, rgba(255, 255, 255, .10) 0%, rgba(255, 255, 255, 0) 28%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, .05) 100%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05);
+    }
+
+    /* Caption + progress under the device */
+    .slideshow-bar {
+      position: relative;
+      z-index: 1;
+      max-width: 1020px;
+      margin: clamp(52px, 7vw, 84px) auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px 28px;
+      color: var(--ink);
+    }
+    .slide-caption { display: flex; align-items: center; gap: 12px; min-width: 0; transition: opacity .35s, transform .35s var(--ease); }
+    .slide-caption.swap { opacity: 0; transform: translateY(6px); }
+    .slide-caption .kicker { margin: 0; flex: none; }
+    .slide-caption strong { font-size: 1.05rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .slide-caption .counter { color: var(--muted); font-size: .82rem; font-variant-numeric: tabular-nums; flex: none; }
+
+    .slide-progress { display: flex; gap: 6px; flex: none; }
+    .slide-progress button {
+      position: relative;
+      width: clamp(22px, 3vw, 34px);
+      height: 20px;
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+    .slide-progress button::before,
+    .slide-progress .fill {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      height: 4px;
+      margin-top: -2px;
+      border-radius: 4px;
+    }
+    .slide-progress button::before { background: rgba(139, 92, 246, .18); }
+    .slide-progress .fill { background: var(--gradient); transform: scaleX(0); transform-origin: left; }
+    .slide-progress .done .fill { transform: scaleX(1); }
+    .slide-progress .active .fill { animation: segFill var(--slide-ms, 5000ms) linear forwards; }
+    .slide-progress.paused .active .fill { animation-play-state: paused; }
+    @keyframes segFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    .hero .hero-stats {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px clamp(32px, 6vw, 80px);
+      margin-top: 56px;
+      color: var(--ink);
+      text-align: center;
+    }
+    .hero-stats strong { display: block; font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
+    .hero-stats span { color: var(--muted); font-size: .8rem; }
+
+    /* Tech strip */
+    .tech { position: relative; z-index: 1; padding: 44px 0 10px; text-align: center; }
+    .tech p { color: var(--muted); font-size: .82rem; margin-bottom: 18px; }
+    .tech ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px 46px;
+      list-style: none;
+      color: #9A9CB8;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+
+    /* ---------- Sections ---------- */
+    .section { padding: 96px 0; }
+    .section-soft { background: var(--soft); }
+
+    .section-head { max-width: 640px; margin: 0 auto 52px; text-align: center; }
+    .section-head.left { margin-left: 0; text-align: left; }
+
+    .kicker {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      background: var(--tint);
+      color: var(--violet-deep);
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+    .section-head p { margin-top: 14px; color: var(--muted); }
+
+    /* Services */
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+    .service {
+      padding: 30px 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--white);
+      transition: transform .3s var(--ease), box-shadow .3s, border-color .3s;
+    }
+    .service:hover { transform: translateY(-6px); border-color: rgba(139, 92, 246, .45); box-shadow: var(--shadow); }
+
+    .service-icon {
+      width: 52px; height: 52px;
+      display: grid; place-items: center;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      color: var(--white);
+      background: var(--gradient);
+      box-shadow: 0 10px 22px -10px rgba(109, 70, 230, .8);
+    }
+    .service-icon svg { width: 24px; height: 24px; }
+    .service h3 { margin-bottom: 8px; font-size: 1.12rem; font-weight: 700; }
+    .service p { color: var(--muted); font-size: .9rem; }
+
+    /* Work */
+    .work-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 44px; }
+    .work-head .section-head { margin-bottom: 0; }
+
+    .project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+
+    .card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+      transition: transform .35s var(--ease), box-shadow .35s, border-color .35s;
+    }
+    .card:hover { transform: translateY(-6px); border-color: rgba(139, 92, 246, .45); box-shadow: var(--shadow); }
+    .card-link { display: block; height: 100%; }
+
+    .preview {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      margin: 10px 10px 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--tint), #E3F4FD);
+    }
+    .preview iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 400%; height: 400%;
+      border: 0;
+      background: #fff;
+      transform: scale(.25);
+      transform-origin: top left;
+      pointer-events: none;
+      transition: transform .5s var(--ease);
+    }
+    .card:hover .preview iframe { transform: scale(.26); }
+
+    .preview-label {
+      position: absolute;
+      top: 12px; left: 12px;
+      padding: 5px 11px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, .92);
+      color: var(--violet-deep);
+      font-size: .7rem;
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .meta { padding: 20px 20px 22px; }
+    .meta-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+    .meta h3 { font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em; }
+    .meta p { color: var(--muted); font-size: .87rem; }
+
+    .external-icon {
+      width: 34px; height: 34px;
+      flex-shrink: 0;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: var(--tint);
+      color: var(--violet-deep);
+      transition: transform .25s, background .25s, color .25s;
+    }
+    .external-icon svg { width: 15px; height: 15px; }
+    .card:hover .external-icon { color: var(--white); background: var(--violet); transform: rotate(45deg); }
+
+    .project-url {
+      display: block;
+      overflow: hidden;
+      margin-top: 14px;
+      color: var(--violet-deep);
+      font-size: .76rem;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Process */
+    .process-grid { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .process-grid::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 12%; right: 12%;
+      border-top: 2px dashed rgba(139, 92, 246, .35);
+    }
+    .step { position: relative; text-align: center; }
+    .step-num {
+      position: relative;
+      width: 64px; height: 64px;
+      display: grid; place-items: center;
+      margin: 0 auto 20px;
+      border: 6px solid var(--soft);
+      border-radius: 50%;
+      color: var(--white);
+      background: var(--gradient);
+      font-weight: 800;
+      font-size: 1.05rem;
+      box-shadow: 0 10px 24px -10px rgba(109, 70, 230, .8);
+    }
+    .step h3 { margin-bottom: 6px; font-size: 1.05rem; font-weight: 700; }
+    .step p { max-width: 240px; margin: 0 auto; color: var(--muted); font-size: .88rem; }
+
+    /* Pricing */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+
+    .plan {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 34px 30px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+      transition: transform .3s var(--ease), box-shadow .3s;
+    }
+    .plan:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+
+    .plan-featured {
+      color: var(--white);
+      border-color: transparent;
+      background: var(--gradient-dark);
+      box-shadow: var(--shadow);
+    }
+    .plan-featured .plan-desc,
+    .plan-featured .plan-features li { color: rgba(255, 255, 255, .82); }
+    .plan-featured .plan-price small { color: rgba(255, 255, 255, .7); }
+    .plan-featured .plan-features { border-color: rgba(255, 255, 255, .15); }
+    .plan-featured .check { background: rgba(255, 255, 255, .16); color: var(--white); }
+
+    .badge {
+      position: absolute;
+      top: 22px; right: 22px;
+      padding: 5px 12px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, .16);
+      color: var(--white);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .plan-icon {
+      width: 48px; height: 48px;
+      display: grid; place-items: center;
+      margin-bottom: 18px;
+      border-radius: 14px;
+      background: var(--tint);
+      color: var(--violet-deep);
+    }
+    .plan-featured .plan-icon { background: rgba(255, 255, 255, .14); color: var(--white); }
+    .plan-icon svg { width: 22px; height: 22px; }
+
+    .plan h3 { font-size: 1.25rem; font-weight: 800; }
+    .plan-desc { margin-top: 6px; color: var(--muted); font-size: .88rem; }
+
+    .plan-price { margin: 22px 0 4px; }
+    .plan-price small { display: block; color: var(--muted); font-size: .78rem; font-weight: 600; }
+    .plan-price strong { font-size: clamp(1.75rem, 2.6vw, 2.15rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.2; }
+    .plan-price strong span { font-size: .55em; font-weight: 700; }
+
+    .plan-features {
+      flex: 1;
+      display: grid;
+      align-content: start;
+      gap: 11px;
+      margin: 20px 0 28px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      list-style: none;
+    }
+    .plan-features li { display: flex; gap: 10px; color: var(--muted); font-size: .88rem; }
+    .check {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+      display: grid; place-items: center;
+      margin-top: 1px;
+      border-radius: 50%;
+      background: var(--tint);
+      color: var(--violet-deep);
+    }
+    .check svg { width: 11px; height: 11px; }
+
+    .plan .button { width: 100%; }
+
+    .addons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .addon {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 18px 20px;
+      border: 1px dashed rgba(139, 92, 246, .35);
+      border-radius: 16px;
+      background: var(--white);
+    }
+    .addon span { color: var(--muted); font-size: .8rem; }
+    .addon strong { font-size: .95rem; }
+    .addon em { color: var(--violet-deep); font-style: normal; font-weight: 700; font-size: .9rem; }
+
+    .pricing-note { margin-top: 22px; color: var(--muted); font-size: .82rem; text-align: center; }
+
+    /* CTA band */
+    .cta {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(40px, 6vw, 64px);
+      border-radius: 28px;
+      background: var(--gradient-dark);
+      color: var(--white);
+      text-align: center;
+    }
+    .cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 10% 110%, rgba(56, 189, 248, .35), transparent 40%),
+        radial-gradient(circle at 95% -10%, rgba(139, 92, 246, .6), transparent 45%);
+      pointer-events: none;
+    }
+    .cta > * { position: relative; }
+    .cta h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); line-height: 1.2; font-weight: 800; letter-spacing: -.03em; }
+    .cta p { max-width: 540px; margin: 14px auto 28px; color: rgba(255, 255, 255, .8); }
+
+    /* FAQ */
+    .faq { max-width: 820px; margin: 0 auto; display: grid; gap: 14px; }
+    .faq details {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--white);
+      transition: border-color .25s, box-shadow .25s;
+    }
+    .faq details[open] { border-color: rgba(139, 92, 246, .4); box-shadow: var(--shadow-sm); }
+    .faq summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      font-weight: 700;
+      list-style: none;
+      cursor: pointer;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after {
+      content: '+';
+      width: 30px; height: 30px;
+      flex-shrink: 0;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: var(--tint);
+      color: var(--violet-deep);
+      font-size: 1.2rem;
+      font-weight: 600;
+      transition: transform .25s;
+    }
+    .faq details[open] summary::after { content: '−'; background: var(--violet); color: var(--white); }
+    .faq details p { padding: 0 24px 22px; color: var(--muted); font-size: .92rem; }
+
+    /* Footer */
+    .footer { margin-top: 96px; background: var(--gradient-dark); color: rgba(255, 255, 255, .8); }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 36px;
+      padding: 60px 0 40px;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+    .footer .brand { color: var(--white); }
+    .footer .brand span { color: #B9A4FF; }
+    .footer-about { max-width: 320px; margin-top: 14px; font-size: .88rem; }
+    .footer h4 { margin-bottom: 14px; color: var(--white); font-size: .95rem; }
+    .footer ul { display: grid; gap: 9px; list-style: none; font-size: .88rem; }
+    .footer ul a:hover { color: var(--white); }
+    .footer-bottom { display: flex; justify-content: space-between; gap: 16px; padding: 22px 0; font-size: .8rem; color: rgba(255, 255, 255, .6); }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1000px) {
+      .hero { --hill-radius: 150px; }
+      .deco-sparkle { top: 300px; left: 4%; width: 30px; }
+      .deco-bolt { top: 300px; right: 4%; width: 50px; }
+      .services-grid, .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
+      .addons { grid-template-columns: repeat(2, 1fr); }
+      .process-grid { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
+      .process-grid::before { display: none; }
+    }
+
+    @media (max-width: 860px) {
+      .menu-toggle { display: grid; }
+      .nav-cta { display: none; }
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 10px 24px 20px;
+        background: var(--white);
+        border-bottom: 1px solid var(--line);
+        box-shadow: var(--shadow-sm);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 0; font-size: 1rem; border-bottom: 1px solid var(--line); }
+      .nav-links .button { margin-top: 14px; border-bottom: 0; color: var(--white); }
+    }
+
+    @media (min-width: 861px) {
+      .nav-links .mobile-only { display: none; }
+      /* Small dot separators between nav links, as in the reference design. */
+      .nav-links a:not(.button) { position: relative; }
+      .nav-links a:not(.button) + a:not(.button)::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: -17px;
+        width: 3px; height: 3px;
+        margin-top: -1.5px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: .45;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container { width: calc(100% - 32px); }
+      .section { padding: 70px 0; }
+      .hero { --hill-radius: 70px; padding-top: calc(74px + 40px); }
+      .deco-sparkle:not(.tiny), .deco-ring { display: none; }
+      .deco-bolt { top: 92px; right: 5%; width: 36px; }
+      .hero-actions .button { flex: 1 1 200px; }
+      .device-screen { aspect-ratio: 4 / 3; }
+      .browser-open span { display: none; }
+      .slideshow-bar { flex-direction: column; text-align: center; }
+      .slide-caption { flex-wrap: wrap; justify-content: center; }
+      .hero .hero-stats { gap: 22px 28px; margin-top: 44px; }
+      .hero-stats strong { font-size: 1.3rem; }
+      .services-grid, .project-grid, .process-grid, .addons { grid-template-columns: 1fr; }
+      .work-head { flex-direction: column; align-items: flex-start; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+      /* Keep the slideshow timer bar accurate: it conveys the 5 s timing, not decoration. */
+      .slide-progress .active .fill { animation-duration: var(--slide-ms, 5000ms) !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a href="#home" class="brand" aria-label="Ayda Nova home">
+        <img src="./logo.png" alt="" style="width: 100px; height: 100px; margin-right: 8px;">
+        <!-- Ayda<span>Nova</span> -->
+      </a>
+
+      <div class="nav-links" id="nav-links">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="button button-primary mobile-only">Let's talk</a>
+      </div>
+
+      <a href="#contact" class="button button-primary nav-cta">Let's talk
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="home">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-deco" aria-hidden="true">
+        <span class="deco deco-ring"></span>
+        <span class="deco deco-ring r2"></span>
+        <svg class="deco deco-sparkle" viewBox="0 0 40 40" fill="currentColor"><path d="M20 0c1.2 10.6 5.4 15.8 20 20-14.6 4.2-18.8 9.4-20 20-1.2-10.6-5.4-15.8-20-20 14.6-4.2 18.8-9.4 20-20Z"/></svg>
+        <svg class="deco deco-sparkle small" viewBox="0 0 40 40" fill="currentColor"><path d="M20 0c1.2 10.6 5.4 15.8 20 20-14.6 4.2-18.8 9.4-20 20-1.2-10.6-5.4-15.8-20-20 14.6-4.2 18.8-9.4 20-20Z"/></svg>
+        <svg class="deco deco-sparkle tiny" viewBox="0 0 40 40" fill="currentColor"><path d="M20 0c1.2 10.6 5.4 15.8 20 20-14.6 4.2-18.8 9.4-20 20-1.2-10.6-5.4-15.8-20-20 14.6-4.2 18.8-9.4 20-20Z"/></svg>
+        <svg class="deco deco-bolt" viewBox="0 0 64 72">
+          <path d="M40 2 10 40h20l-8 30 34-42H35l9-26Z" fill="#7C4DFF" transform="translate(4 3)"/>
+          <path d="M40 2 10 40h20l-8 30 34-42H35l9-26Z" fill="#fff" stroke="#A78BFA" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="container hero-intro">
+        <span class="pill hero-pill reveal"><span class="dot"></span>Available for new projects</span>
+
+        <h1 class="reveal" style="--d:.08s">
+          <span class="h1-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 4 8 8-8 8"/></svg></span>I design &amp; build websites and apps that <span class="grad-text">bring ideas to life</span>
+        </h1>
+
+        <p class="hero-text reveal" style="--d:.18s">
+          Hi, I'm <strong>Ayda</strong> — a developer turning ideas into
+          clean, fast and engaging digital products. From a first prototype to a working MVP,
+          for the web and mobile.
+        </p>
+
+        <div class="hero-actions reveal" style="--d:.28s">
+          <a href="#pricing" class="button button-hero">
+            Start a project
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+          <a href="#work" class="button button-glass">View my work</a>
+        </div>
+      </div>
+
+      <div class="container device-stage">
+        <figure class="device reveal" style="--d:.4s" aria-label="Slideshow of live project previews">
+          <div class="hero-hill" aria-hidden="true"></div>
+          <div class="device-stack s1" aria-hidden="true"></div>
+          <div class="device-stack s2" aria-hidden="true"></div>
+
+          <div class="device-frame">
+            <div class="device-screen">
+              <div class="browser-bar">
+                <span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <div class="browser-url">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                  <span id="device-url">loading…</span>
+                </div>
+                <a class="browser-open" id="device-open" href="#work" target="_blank" rel="noopener noreferrer">
+                  <span>Visit</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                </a>
+              </div>
+              <div class="device-viewport" id="device-viewport"></div>
+              <div class="screen-glare" aria-hidden="true"></div>
+            </div>
+          </div>
+        </figure>
+
+        <div class="slideshow-bar">
+          <div class="slide-caption" id="slide-caption" aria-live="polite">
+            <span class="kicker" id="slide-label">Project</span>
+            <strong id="slide-name"></strong>
+            <span class="counter" id="slide-counter"></span>
+          </div>
+          <div class="slide-progress" id="slide-progress" role="group" aria-label="Choose a project preview"></div>
+        </div>
+
+        <div class="hero-stats">
+          <div><strong id="stat-projects">15+</strong><span>Prototypes &amp; MVPs</span></div>
+          <div><strong>Web &amp; Mobile</strong><span>Platforms I build for</span></div>
+          <div><strong>100%</strong><span>Responsive design</span></div>
+        </div>
+      </div>
+
+      <div class="container tech">
+        <p>Tools &amp; technologies I build with</p>
+        <ul>
+          <li>HTML / CSS</li>
+          <li>JavaScript</li>
+          <li>Node.js</li>
+          <li>Django</li>
+          <li>React</li>
+          <li>Next.js</li>
+          <li>Firebase</li>
+          <li>Hostinger</li>
+          <li>Amazon Web Services</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Services</span>
+          <h2>Services that help your idea succeed</h2>
+          <p>Everything you need to go from a rough idea to a product people can actually use.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+            <h3>Website development</h3>
+            <p>Fast, responsive websites — from landing pages to full web platforms.</p>
+          </article>
+          <article class="service">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div>
+            <h3>Mobile apps</h3>
+            <p>Mobile-first app experiences that feel smooth on every screen.</p>
+          </article>
+          <article class="service">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 0 18c1 0 1.5-.8 1.5-1.5 0-1.2-1-1.5-1-2.5s.8-1.5 2-1.5H17a4 4 0 0 0 4-4c0-4.4-4-8.5-9-8.5Z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10.5" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/></svg></div>
+            <h3>UI / UX design</h3>
+            <p>Clean, modern interfaces designed around your users and your brand.</p>
+          </article>
+          <article class="service">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M17 14v6M14 17h6"/></svg></div>
+            <h3>Prototypes</h3>
+            <p>Clickable prototypes to test an idea, pitch it, or win over a client.</p>
+          </article>
+          <article class="service">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2"/><path d="M9 15 6 12l2-4h4l5-5c2 0 4 2 4 4l-5 5v4l-4 2-3-3Z"/><circle cx="15" cy="9" r="1.2"/></svg></div>
+            <h3>MVP development</h3>
+            <p>A working first version with real features, ready for your first users.</p>
+          </article>
+          <article class="service">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="5"/><path d="m10 12 1.5 1.5L14.5 10"/></svg></div>
+            <h3>AI integration</h3>
+            <p>Smart assistants and AI features that add real value to your product.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section class="section section-soft" id="work">
+      <div class="container">
+        <div class="work-head">
+          <div class="section-head left">
+            <span class="kicker">Portfolio</span>
+            <h2>Recent work I'm proud of</h2>
+            <p>A selection of live prototypes and MVPs — click any card to open the project.</p>
+          </div>
+          <a href="#contact" class="button button-ghost">Build yours
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+
+        <div class="project-grid" id="prototype-grid"></div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section section-soft" id="process" style="padding-top: 20px;">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">How it works</span>
+          <h2>A simple, transparent process</h2>
+        </div>
+
+        <div class="process-grid">
+          <div class="step">
+            <div class="step-num">01</div>
+            <h3>Discovery</h3>
+            <p>We talk about your idea, your goals and the people it's for.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <h3>Design</h3>
+            <p>I design the screens and flows, and you give feedback.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <h3>Development</h3>
+            <p>I build it — responsive, fast and tested on real devices.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">04</div>
+            <h3>Launch</h3>
+            <p>Your project goes live with a link you can share right away.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Pricing</span>
+          <h2>Clear pricing for every stage of your idea</h2>
+          <p>For websites and mobile apps. Pick the stage you're at — you can always upgrade later.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Prototype -->
+          <article class="plan">
+            <div class="plan-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M17 14v6M14 17h6"/></svg></div>
+            <h3>Prototype</h3>
+            <p class="plan-desc">Test your idea or pitch it with a clickable, live prototype.</p>
+            <div class="plan-price">
+              <small>Website or mobile app</small>
+              <strong>8,000 – 10,000 <span>DA</span></strong>
+            </div>
+            <ul class="plan-features">
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Up to 5 pages / screens</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Modern, responsive design</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Interactive navigation</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Hosted online with a shareable link</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>1 round of revisions</li>
+            </ul>
+            <a class="button button-ghost" href="mailto:aydanova23@gmail.com?subject=Prototype%20project">Get a prototype</a>
+          </article>
+
+          <!-- MVP -->
+          <article class="plan plan-featured">
+            <span class="badge">Most popular</span>
+            <div class="plan-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2"/><path d="M9 15 6 12l2-4h4l5-5c2 0 4 2 4 4l-5 5v4l-4 2-3-3Z"/><circle cx="15" cy="9" r="1.2"/></svg></div>
+            <h3>MVP</h3>
+            <p class="plan-desc">A working first version of your product, ready for real users.</p>
+            <div class="plan-price">
+              <small>Starting from</small>
+              <strong>15,000 <span>DA</span></strong>
+            </div>
+            <ul class="plan-features">
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Everything in Prototype</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Real, working core features</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>User accounts &amp; database</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Simple admin dashboard</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Deployment &amp; domain setup</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>2 rounds of revisions</li>
+            </ul>
+            <a class="button button-light" href="mailto:thesisscript2@gmail.com?subject=MVP%20project">Start my MVP</a>
+          </article>
+
+          <!-- Full product -->
+          <article class="plan">
+            <div class="plan-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8Z"/></svg></div>
+            <h3>Full product</h3>
+            <p class="plan-desc">A complete, custom website or app built to grow with you.</p>
+            <div class="plan-price">
+              <small>Custom quote, starting from</small>
+              <strong>30,000 <span>DA</span></strong>
+            </div>
+            <ul class="plan-features">
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Everything in MVP</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Unlimited pages / screens</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Payments or e-commerce</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>Multilingual (AR / FR / EN)</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>SEO &amp; AI features</li>
+              <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>1 month of support</li>
+            </ul>
+            <a class="button button-ghost" href="mailto:thesisscript2@gmail.com?subject=Full%20product%20quote">Request a quote</a>
+          </article>
+        </div>
+
+        <div class="addons">
+          <div class="addon"><span>Add-on</span><strong>Landing page</strong><em>from 5,000 DA</em></div>
+          <div class="addon"><span>Add-on</span><strong>UI / UX design only</strong><em>from 4,000 DA</em></div>
+          <div class="addon"><span>Add-on</span><strong>Extra language</strong><em>+2,000 DA</em></div>
+          <div class="addon"><span>Add-on</span><strong>Maintenance</strong><em>3,000 DA / month</em></div>
+        </div>
+
+        <p class="pricing-note">Final price depends on the number of pages and features. Every quote is free.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="container" id="contact">
+      <div class="cta">
+        <h2>Have an idea in mind?<br>Let's build it together.</h2>
+        <p>Tell me about your project and I'll get back to you with a free quote and a plan to bring it to life.</p>
+        <a class="button button-light" href="mailto:thesisscript2@gmail.com?subject=Hello%20Ayda%20Nova">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          Email me
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">FAQ</span>
+          <h2>Frequently asked questions</h2>
+        </div>
+
+        <div class="faq">
+          <details open>
+            <summary>What's the difference between a prototype and an MVP?</summary>
+            <p>A prototype shows how your product will look and feel — the screens and navigation are clickable, but the features are not connected to real data. An MVP is a working first version: real features, user accounts and a database, ready for your first users.</p>
+          </details>
+          <details>
+            <summary>Do you build mobile apps as well as websites?</summary>
+            <p>Yes. Both the Prototype and MVP plans are available for websites and for mobile apps, at the same prices.</p>
+          </details>
+          <details>
+            <summary>How long does a project take?</summary>
+            <p>It depends on the size of the project. A prototype is usually the quickest; an MVP or a full product takes longer. You'll get a clear timeline with your quote before we start.</p>
+          </details>
+          <details>
+            <summary>Can I upgrade my prototype to an MVP later?</summary>
+            <p>Of course. Many projects start as a prototype to validate the idea, then grow into an MVP built on the same design.</p>
+          </details>
+          <details>
+            <summary>What do I need to get started?</summary>
+            <p>Just your idea. Send me an email describing what you want to build, and we'll figure out the rest together.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <a href="#home" class="brand"><img src="./logo-bg.jpg" alt="">Ayda<span>Nova</span></a>
+          <p class="footer-about">Designing and building websites, apps, prototypes and MVPs with intention and curiosity.</p>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:thesisscript2@gmail.com">thesisscript2@gmail.com</a></li>
+            <li>Available for new projects</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> Ayda Nova. All rights reserved.</span>
+        <span>Designed with intention · Built with curiosity.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Project information. Edit titles, categories, descriptions, and URLs here.
+    const prototypeProjects = [
+      {
+        name: "ConteVR",
+        label: "EdTech",
+        url: "https://conte-vr.vercel.app/",
+        description: "A virtual reality concept exploring immersive digital experiences."
+      },
+      {
+        name: "Study Tracking",
+        label: "Education",
+        url: "https://study-tracking-one.vercel.app/",
+        description: "A student productivity concept for planning, tracking, and managing study goals."
+      },
+      {
+        name: "MMB Vêtements",
+        label: "E-commerce",
+        url: "https://mmb-vetements.vercel.app/",
+        description: "A clothing storefront concept with product browsing and a clean retail layout."
+      },
+      {
+        name: "Lisanova",
+        label: "Language learning",
+        url: "https://lisanova.vercel.app/",
+        description: "A language-learning concept combining accessible learning flows with a modern interface."
+      },
+      {
+        name: "Atlas DZ AI",
+        label: "Artificial intelligence",
+        url: "https://atlasdz-ai.vercel.app/",
+        description: "An AI-powered assistant concept designed around the Algerian market."
+      },
+      {
+        name: "Acad Zone",
+        label: "Education",
+        url: "https://acad-zone.vercel.app/",
+        description: "An academic resources hub concept for students and educational content."
+      },
+      {
+        name: "E-Sanad",
+        label: "Digital services",
+        url: "https://e-sanad.vercel.app/",
+        description: "A digital certification and support-services concept."
+      },
+      {
+        name: "Absenta",
+        label: "Productivity",
+        url: "https://thesis-script.github.io/absenta/",
+        description: "An attendance-tracking tool concept for classrooms and teams."
+      }
+    ];
+
+    // Hero device slideshow: every project is shown for SLIDE_MS, then it loops back to the first.
+    const SLIDE_MS = 5000;
+    const DEVICE_VIRTUAL_WIDTH = 1440; // sites render at a desktop width, then scale down uniformly
+
+    const arrowIcon = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M7 17 17 7M7 7h10v10"/>
+      </svg>`;
+
+    function makeFrame(url, title) {
+      const iframe = document.createElement("iframe");
+      iframe.title = title;
+      iframe.loading = "lazy";
+      iframe.tabIndex = -1;
+      iframe.setAttribute("aria-hidden", "true");
+      iframe.setAttribute("sandbox", "allow-scripts allow-same-origin");
+      iframe.referrerPolicy = "no-referrer";
+      iframe.dataset.src = url;
+      return iframe;
+    }
+
+    function createProjectCard(project) {
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const link = document.createElement("a");
+      link.className = "card-link";
+      link.href = project.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.setAttribute("aria-label", `Visit ${project.name} website`);
+
+      const preview = document.createElement("div");
+      preview.className = "preview";
+
+      const label = document.createElement("span");
+      label.className = "preview-label";
+      label.textContent = project.label;
+
+      preview.append(makeFrame(project.url, `${project.name} website preview`), label);
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      const metaTop = document.createElement("div");
+      metaTop.className = "meta-top";
+
+      const title = document.createElement("h3");
+      title.textContent = project.name;
+
+      const icon = document.createElement("span");
+      icon.className = "external-icon";
+      icon.innerHTML = arrowIcon;
+
+      metaTop.append(title, icon);
+
+      const description = document.createElement("p");
+      description.textContent = project.description;
+
+      const url = document.createElement("span");
+      url.className = "project-url";
+      url.textContent = project.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+      meta.append(metaTop, description, url);
+      link.append(preview, meta);
+      card.append(link);
+      return card;
+    }
+
+    try {
+      const grid = document.getElementById("prototype-grid");
+      grid.replaceChildren(...prototypeProjects.map(createProjectCard));
+      document.getElementById("stat-projects").textContent = `${prototypeProjects.length}+`;
+    } catch (error) {
+      console.error("Render error:", error);
+    }
+
+    // Hero device slideshow.
+    function initDeviceSlideshow(projects) {
+      const viewport = document.getElementById("device-viewport");
+      const progress = document.getElementById("slide-progress");
+      if (!viewport || !progress || !projects.length) return;
+
+      const urlText = document.getElementById("device-url");
+      const openLink = document.getElementById("device-open");
+      const caption = document.getElementById("slide-caption");
+      const labelEl = document.getElementById("slide-label");
+      const nameEl = document.getElementById("slide-name");
+      const counterEl = document.getElementById("slide-counter");
+      progress.style.setProperty("--slide-ms", `${SLIDE_MS}ms`);
+
+      const slides = projects.map((project, index) => {
+        const slide = document.createElement("div");
+        slide.className = "slide";
+
+        const loader = document.createElement("div");
+        loader.className = "slide-loader";
+        loader.textContent = project.name;
+
+        // No data-src: these frames are loaded by the slideshow, not the lazy loader below.
+        const iframe = makeFrame(project.url, `${project.name} preview`);
+        delete iframe.dataset.src;
+        iframe.loading = "eager";
+        iframe.addEventListener("load", () => slide.classList.add("loaded"));
+
+        slide.append(loader, iframe);
+        viewport.append(slide);
+
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.setAttribute("aria-label", `Show ${project.name}`);
+        dot.innerHTML = '<span class="fill"></span>';
+        dot.addEventListener("click", () => show(index));
+        progress.append(dot);
+
+        return { project, slide, iframe, dot };
+      });
+
+      // Uniform scale so the site keeps its proportions and exactly fills the screen.
+      const fit = () => {
+        const scale = viewport.clientWidth / DEVICE_VIRTUAL_WIDTH;
+        if (!scale) return;
+        const height = Math.ceil(viewport.clientHeight / scale);
+        slides.forEach(({ iframe }) => {
+          iframe.style.width = `${DEVICE_VIRTUAL_WIDTH}px`;
+          iframe.style.height = `${height}px`;
+          iframe.style.transform = `scale(${scale})`;
+        });
+      };
+      fit();
+      if ("ResizeObserver" in window) new ResizeObserver(fit).observe(viewport);
+      else window.addEventListener("resize", fit);
+
+      // Load the current and the next slide so each one is ready before it appears.
+      const ensureLoaded = (i) => {
+        const { iframe, project } = slides[i];
+        if (!iframe.getAttribute("src")) iframe.src = project.url;
+      };
+
+      let current = -1;
+      let timer = null;
+      let startedAt = 0;
+      let remaining = SLIDE_MS;
+      const leaveTimers = new Map();
+
+      function updateCaption(project, index) {
+        const apply = () => {
+          labelEl.textContent = project.label;
+          nameEl.textContent = project.name;
+          counterEl.textContent = `${String(index + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+          urlText.textContent = project.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+          urlText.style.opacity = "1";
+          openLink.href = project.url;
+          openLink.setAttribute("aria-label", `Visit ${project.name} website`);
+          caption.classList.remove("swap");
+        };
+        if (current === -1) return apply();
+        caption.classList.add("swap");
+        urlText.style.opacity = "0";
+        setTimeout(apply, 300);
+      }
+
+      function schedule(ms) {
+        clearTimeout(timer);
+        startedAt = performance.now();
+        remaining = ms;
+        timer = setTimeout(() => show(current + 1), ms);
+      }
+
+      function show(next) {
+        next = (next + slides.length) % slides.length;
+        ensureLoaded(next);
+        ensureLoaded((next + 1) % slides.length);
+
+        if (next !== current) {
+          const previous = slides[current];
+          if (previous) {
+            previous.slide.classList.remove("is-active");
+            previous.slide.classList.add("is-leaving");
+            clearTimeout(leaveTimers.get(current));
+            leaveTimers.set(current, setTimeout(() => previous.slide.classList.remove("is-leaving"), 1300));
+          }
+          const incoming = slides[next];
+          clearTimeout(leaveTimers.get(next));
+          incoming.slide.classList.remove("is-leaving");
+          incoming.slide.classList.add("is-active");
+          updateCaption(incoming.project, next);
+        }
+
+        slides.forEach(({ dot }, i) => {
+          dot.classList.remove("active");
+          dot.classList.toggle("done", i < next);
+          dot.removeAttribute("aria-current");
+        });
+        void progress.offsetWidth; // restart the progress-bar animation
+        slides[next].dot.classList.add("active");
+        slides[next].dot.setAttribute("aria-current", "true");
+
+        current = next;
+        progress.classList.remove("paused");
+        schedule(SLIDE_MS);
+      }
+
+      // Pause while the tab is hidden, then resume with the time that was left.
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          clearTimeout(timer);
+          remaining = Math.max(0, remaining - (performance.now() - startedAt));
+          progress.classList.add("paused");
+        } else {
+          progress.classList.remove("paused");
+          schedule(remaining);
+        }
+      });
+
+      show(0);
+    }
+
+    initDeviceSlideshow(prototypeProjects);
+
+    // Load iframe previews only when they're near the viewport.
+    const frames = document.querySelectorAll("iframe[data-src]");
+    const loadFrame = (frame) => { if (!frame.src) frame.src = frame.dataset.src; };
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadFrame(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: "200px" });
+      frames.forEach((frame) => observer.observe(frame));
+    } else {
+      frames.forEach(loadFrame);
+    }
+
+    // Mobile menu.
+    const menuToggle = document.getElementById("menu-toggle");
+    const navLinks = document.getElementById("nav-links");
+
+    const siteHeader = document.querySelector(".site-header");
+
+    // Header is transparent over the hero, solid once scrolled or while the mobile menu is open.
+    const syncHeader = () => {
+      siteHeader.classList.toggle("solid", window.scrollY > 24 || navLinks.classList.contains("open"));
+    };
+    window.addEventListener("scroll", syncHeader, { passive: true });
+    syncHeader();
+
+    menuToggle.addEventListener("click", () => {
+      const open = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      syncHeader();
+    });
+
+    navLinks.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+      navLinks.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      syncHeader();
+    }));
+
+    // Only one FAQ item open at a time.
+    document.querySelectorAll(".faq details").forEach((item, _, all) => {
+      item.addEventListener("toggle", () => {
+        if (item.open) all.forEach((other) => { if (other !== item) other.open = false; });
+      });
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
